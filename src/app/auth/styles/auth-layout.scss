@@ -1,0 +1,124 @@
+/* Auth Layout Styles */
+:host {
+  display: block;
+}
+
+/* Layout: hero (left) + form (right) on desktop, stacked on mobile */
+.page {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+  .page {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+  /* Ensure both sides fill the viewport so inner content can center */
+  .hero,
+  .form-col {
+    min-height: 100dvh;
+  }
+}
+
+/* Angular red hero background */
+.hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(1000px 700px at -10% -20%, rgba(255, 76, 115, 0.55) 0%, rgba(221, 0, 49, 0.45) 40%, rgba(195, 0, 47, 0.35) 65%, rgba(143, 0, 35, 0.25) 100%),
+    linear-gradient(135deg, #dd0031 0%, #c3002f 50%, #8f0023 100%);
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  color: #fff;
+  isolation: isolate;
+}
+
+/* Angular-ish shield accents */
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: auto;
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(0.5px);
+}
+
+.hero::before {
+  width: 520px;
+  height: 520px;
+  right: -140px;
+  top: -100px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03));
+  clip-path: polygon(50% 0%, 95% 20%, 95% 80%, 50% 100%, 5% 80%, 5% 20%);
+  opacity: 0.5;
+  transform: rotate(-8deg);
+}
+
+.hero::after {
+  width: 380px;
+  height: 380px;
+  left: -90px;
+  bottom: -70px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  clip-path: polygon(50% 0%, 92% 22%, 92% 78%, 50% 100%, 8% 78%, 8% 22%);
+  opacity: 0.35;
+  transform: rotate(7deg);
+}
+
+.hero-inner {
+  max-width: 680px;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: clamp(28px, 3.2vw, 48px);
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+  margin: 0 0 24px;
+  text-shadow: 0 6px 28px rgba(0,0,0,0.25);
+}
+
+.hero-sub {
+  font-size: clamp(14px, 1.4vw, 18px);
+  opacity: 0.95;
+  margin: 0;
+}
+
+/* Right column with centered card */
+.form-col {
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: linear-gradient(to bottom right, rgba(0,0,0,0.12), rgba(0,0,0,0.06));
+}
+
+/* Card: subtle glass over dark theme panel */
+mat-card {
+  width: 100%;
+  backdrop-filter: saturate(130%) blur(8px);
+  background: rgba(18, 26, 35, 0.8) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* Form spacing */
+form {
+  display: grid;
+  gap: 16px;
+}
+
+.muted {
+  margin-top: 12px;
+  opacity: 0.9;
+}
+
+/* Mobile: compact hero band */
+@media (max-width: 899.98px) {
+  .hero {
+    min-height: 200px;
+    padding: 40px 24px;
+  }
+}

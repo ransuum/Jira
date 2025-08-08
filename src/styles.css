@@ -1,1 +1,73 @@
-/* You can add global styles to this file, and also import other style files */
+/* Use a DARK Angular Material theme */
+@import '@angular/material/prebuilt-themes/pink-bluegrey.css';
+
+/* Angular brand red background */
+:root {
+  --bg: #dd0031;  /* Angular red */
+  --panel: #121a23;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: #e6e8eb;
+}
+
+a {
+  color: #90caf9;
+  text-decoration: none;
+}
+
+.app-container {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.content-scroll {
+  height: 100%;
+  overflow: auto;
+}
+
+.kanban {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 16px;
+  align-items: start;
+}
+
+.kanban-column {
+  width: 320px;
+}
+
+.card-surface {
+  background: var(--panel);
+}
+
+/* Improve card contrast on dark */
+.mat-mdc-card {
+  background: var(--panel) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Make form inputs readable on dark */
+.mat-mdc-form-field-infix,
+.mat-mdc-input-element,
+.mdc-text-field__input {
+  color: #e6e8eb !important;
+}
+
+/* Subtle label color on dark */
+.mdc-floating-label,
+.mat-mdc-form-field mat-label {
+  color: rgba(230, 232, 235, 0.72) !important;
+}
+
+/* Focus underline color for filled/outline fields */
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after {
+  border-bottom-color: #90caf9;
+}
