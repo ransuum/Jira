@@ -1,5 +1,5 @@
 import { Component, computed, inject } from '@angular/core'
-import { Router, RouterLink, RouterOutlet } from '@angular/router'
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router'
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatSidenavModule } from '@angular/material/sidenav'
 import { MatListModule } from '@angular/material/list'
@@ -11,7 +11,7 @@ import { AuthService } from '../core/auth.service'
   standalone: true,
   selector: 'app-shell',
   imports: [
-    RouterOutlet, RouterLink, MatToolbarModule, MatSidenavModule, MatListModule, MatIconModule, MatButtonModule
+    RouterOutlet, RouterLink, MatToolbarModule, MatSidenavModule, MatListModule, MatIconModule, MatButtonModule, RouterLinkActive
   ],
   styles: [`
     .shell {
@@ -86,7 +86,7 @@ export class AppShellComponent {
   private readonly router = inject(Router)
   sampleProjectId = 'P1'
 
-  userName = computed(() => this.auth.user()?.name ?? 'Guest')
+  userName = computed(() => this.auth.user()?.username ?? 'Guest')
 
   logout() {
     this.auth.logout()

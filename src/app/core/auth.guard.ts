@@ -4,7 +4,7 @@ import { AuthService } from './auth.service'
 
 @Injectable({ providedIn: 'root' })
 class AuthGuardService {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private readonly auth: AuthService, private readonly router: Router) {}
   can(): boolean {
     if (!this.auth.isAuthenticated()) {
       this.router.navigate(['/login']).then(r => {})

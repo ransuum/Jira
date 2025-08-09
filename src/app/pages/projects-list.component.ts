@@ -57,6 +57,6 @@ export class ProjectsListComponent implements OnInit {
   projects = signal<Project[]>([])
 
   ngOnInit() {
-    this.projectService.list().subscribe(ps => this.projects.set(ps as Project[]))
+    this.projectService.list().subscribe(ps => this.projects.set(ps))
   }
 }

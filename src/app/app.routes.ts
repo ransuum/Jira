@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router'
 import { AuthGuard } from './core/auth.guard'
-import {ProjectBoardComponent} from './pages/projects-backlog.component';
 
 export const routes: Routes = [
   {

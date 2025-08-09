@@ -16,7 +16,7 @@ import { AuthService } from '../core/auth.service'
     ReactiveFormsModule, RouterLink,
     MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSnackBarModule
   ],
-  styleUrls: ['./styles/auth-layout.scss'], // Reference the external file
+  styleUrls: ['../auth/styles/auth-layout.scss'], // Reference the external file
   styles: [`
     mat-card {
       max-width: 480px; /* Register-specific width */
@@ -42,8 +42,8 @@ import { AuthService } from '../core/auth.service'
           <mat-card-content>
             <form [formGroup]="form" (ngSubmit)="onSubmit()">
               <mat-form-field appearance="outline">
-                <mat-label>Name</mat-label>
-                <input matInput formControlName="name" required autocomplete="name" />
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="username" required autocomplete="username" />
               </mat-form-field>
 
               <mat-form-field appearance="outline">
@@ -79,23 +79,33 @@ export class RegisterComponent {
   loading = signal(false)
 
   form = this.fb.group({
-    name: ['', [Validators.required]],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    username: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]], // Changed from 'name'
+    email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
+    password: ['', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.maxLength(50),
+      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_-])[A-Za-z\d@$!%*#?&_-]+$/)
+    ]]
   })
 
   onSubmit() {
     if (this.form.invalid) return
     this.loading.set(true)
-    const { name, email, password } = this.form.value
-    this.auth.register(name, email, password).subscribe({
+    const { username, email, password } = this.form.value
+    this.auth.register(username, email, password).subscribe({
       next: () => {
         this.loading.set(false)
         this.router.navigate(['/projects']).then(_ => {})
       },
       error: (err) => {
         this.loading.set(false)
-        this.snack.open(err?.error?.message || 'Registration failed', 'Close', { duration: 3000 })
+        // Handle validation errors from backend
+        if (err.status === 400 && Array.isArray(err.error)) {
+          this.snack.open(err.error.join(', '), 'Close', { duration: 5000 })
+        } else {
+          this.snack.open(err?.error?.message || 'Registration failed', 'Close', { duration: 3000 })
+        }
       }
     })
   }

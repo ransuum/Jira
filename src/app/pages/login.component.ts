@@ -16,7 +16,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'
     ReactiveFormsModule, RouterLink,
     MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatSnackBarModule
   ],
-  styleUrls: ['./styles/auth-layout.scss'],
+    styleUrls: ['../auth/styles/auth-layout.scss'],
   styles: [`
     mat-card {
       max-width: 420px;
@@ -24,7 +24,6 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'
   `],
   template: `
     <div class="page">
-      <!-- Hero Section (Left) -->
       <div class="hero">
         <div class="hero-inner">
           <h1 class="hero-title">Welcome to Angular Project Manager</h1>
@@ -78,20 +77,42 @@ export class LoginComponent {
   loading = signal(false)
 
   form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
+    password: ['', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.maxLength(50)
+    ]]
   })
 
   onSubmit() {
-    if (this.form.invalid) return
+    console.log('Form submitted')
+    console.log('Form valid:', this.form.valid)
+    console.log('Form errors:', this.form.errors)
+    console.log('Email errors:', this.form.get('email')?.errors)
+    console.log('Password errors:', this.form.get('password')?.errors)
+    console.log('Form values:', this.form.value)
+
+    if (this.form.invalid) {
+      console.log('Form is invalid, returning early')
+      return
+    }
+
     this.loading.set(true)
     const { email, password } = this.form.value
+
+    console.log('Calling login with:', { email, password })
+
     this.auth.login(email, password).subscribe({
-      next: () => {
+      next: (response) => {
+        console.log('Login successful:', response)
         this.loading.set(false)
-        this.router.navigate(['/projects']).then(r => {})
+        this.router.navigate(['/projects']).then(r => {
+          console.log('Navigation result:', r)
+        })
       },
       error: (err) => {
+        console.error('Login error:', err)
         this.loading.set(false)
         this.snack.open(err?.error?.message || 'Login failed', 'Close', { duration: 3000 })
       }
